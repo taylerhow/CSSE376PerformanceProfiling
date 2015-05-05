@@ -16,12 +16,22 @@ public class MusicPlayer {
 	
 	private Clip clip;
 	
+	//INSTRUMENTATION FOR CSSE376 LAB
+	static HashMap<String, Clip> clips=new HashMap<String, Clip>();
+	
 	/**
 	 * Constructs a Music Player.
 	 *
 	 * @param fileName the destination of the media file.
 	 */
 	public MusicPlayer(String fileName) {
+		//CSSE376 LAB
+		// Try to obtain existing clip first.
+		if(clips.containsKey(fileName)){
+			this.clip = clips.get(fileName);
+			return;
+		}
+		
 		// FIXME: reduce the number of calls to the code below
 		// Obtain a clip.
 		try {
@@ -39,6 +49,7 @@ public class MusicPlayer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		clips.put(fileName, clip);
 	}
 	
 	/**
