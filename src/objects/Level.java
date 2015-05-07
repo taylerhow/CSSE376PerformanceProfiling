@@ -229,6 +229,19 @@ public class Level {
 			}
 			img = new BufferedImage(this.mapWidth*this.tileSize,this.mapHeight*this.tileSize,BufferedImage.TYPE_INT_RGB);
 			imageReader.close();
+			
+			//CSSE 376 LAB: Need to render initial map, since tiles are drawn on update now
+			Graphics2D g = img.createGraphics();
+			int pos;
+			for (int j = 0; j < this.map.length; j++) {
+
+				for (int k = 0; k < this.map[j].length; k++) {
+					pos = this.map[j][k];
+					this.drawTileImage(pos, j, k, g);
+				}
+			}
+			g.dispose();
+
 			generateBarrierCollisionBoxes();
 			generateRegularCollisionBoxes();
 			generateGoldObjects();
@@ -329,16 +342,7 @@ public class Level {
 	 */
 	public void draw(Graphics2D g2) {
 		int currentPosition;
-		// cache the tile background in an image so tiles don't need to be drawn again and again redundantly.
-		Graphics2D g = img.createGraphics();
-		for (int r = 0; r < this.map.length; r++) {
-			for (int c = 0; c < this.map[r].length; c++) {
-				currentPosition = this.map[r][c];
-				drawTileImage(currentPosition, r, c, g);
-			}
-		}
-		g.dispose();
-		// draw cached tiles
+		//CSSE 376 LAB: No need to redraw every single tile..
 		g2.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 	}
 
@@ -384,6 +388,11 @@ public class Level {
 	 */
 	public void updateTile(int x, int y, int tileID) {
 		this.map[x][y] = tileID;
+		
+		//CSSE 376 LAB: Redraw tiles when they're updated instead!
+		Graphics2D g = img.createGraphics();
+		this.drawTileImage(tileID, x, y, g);
+		g.dispose();
 	}
 
 	/**

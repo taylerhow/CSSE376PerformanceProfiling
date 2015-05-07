@@ -78,11 +78,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				break;
 			}
 
+//			// Run the basics.
+//			update();
+//			render();
+//			draw();
+
+			//CSSE376 LAB
+			long startTime = System.nanoTime();
 			// Run the basics.
 			update();
 			render();
 			draw();
+			long endTime = System.nanoTime();
+			long fps = 1000000000L/(endTime- startTime);
+			System.err.println("FPS: "+fps);
 
+			
 			try {
 				Thread.sleep(this.targetTime);
 			} catch (Exception e) {
